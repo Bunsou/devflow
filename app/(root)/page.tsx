@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import HomeFilter from "@/components/filter/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
@@ -26,7 +27,7 @@ const questions = [
     description:
       "I am new to Next.js and I want to learn it. Can someone suggest me some resources?",
     tags: [
-      { _id: "1", name: "Next.js" },
+      { _id: "1", name: "nextjs" },
       { _id: "2", name: "javascript" },
     ],
     author: { _id: "2", name: "John Doe" },
@@ -42,11 +43,24 @@ interface SearchParams {
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
-  const { query = "" } = await searchParams;
+  const { query = "", filter = "" } = await searchParams;
 
-  const filterQuestions = questions.filter((question) =>
-    question.title.toLocaleLowerCase().includes(query?.toLowerCase())
-  );
+  const filterQuestions = questions.filter((question) => {
+    const matchesQuery = question.title
+      .toLowerCase()
+      .includes(query?.toLowerCase());
+
+    // If there's no filter, just check the title
+    if (!filter) return matchesQuery;
+
+    // If there is a filter, check if any tag matches the filter
+    const matchesTag = question.tags.some(
+      (tag) => tag.name.toLowerCase() === filter.toLowerCase()
+    );
+
+    // Return true if both query and tag conditions are met
+    return matchesQuery && matchesTag;
+  });
 
   return (
     <>
@@ -65,7 +79,7 @@ const Home = async ({ searchParams }: SearchParams) => {
           otherClasses="flex-1"
         />
       </section>
-      {/* HomeFilter */}
+      <HomeFilter />
       <div className="mt-10 flex w-full flex-col gap-6">
         {filterQuestions.map((question) => (
           <h1 key={question._id}>{question.title}</h1>

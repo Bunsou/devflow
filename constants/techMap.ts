@@ -5,6 +5,7 @@ export const techMap: { [key: string]: string } = {
   typescript: "devicon-typescript-plain",
   ts: "devicon-typescript-plain colored",
   react: "devicon-react-original",
+  reactjs: "devicon-react-original",
   vue: "devicon-vuejs-plain",
   angular: "devicon-angularjs-plain",
   nextjs: "devicon-nextjs-plain",

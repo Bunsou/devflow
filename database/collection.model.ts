@@ -1,19 +1,24 @@
-import { model, models, Schema, Types } from "mongoose";
+import { Schema, models, model, Types, Document } from "mongoose";
 
-export interface ICollection {
-  author: Types.ObjectId;
-  question: Types.ObjectId;
+export interface IInteraction {
+  user: Types.ObjectId;
+  action: string;
+  actionId: Types.ObjectId;
+  actionType: string;
 }
 
-const CollectionSchema = new Schema<ICollection>(
+export interface IInteractionDoc extends IInteraction, Document {}
+const InteractionSchema = new Schema<IInteraction>(
   {
-    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    question: { type: Schema.Types.ObjectId, ref: "Question", required: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    action: { type: String, required: true }, // 'upvote', 'downvote', 'view', 'ask_question',
+    actionId: { type: Schema.Types.ObjectId, required: true }, // 'questionId', 'answerId',
+    actionType: { type: String, enum: ["question", "answer"], required: true },
   },
   { timestamps: true }
 );
 
-const Collection =
-  models?.Collection || model<ICollection>("Collection", CollectionSchema);
+const Interaction =
+  models?.Interaction || model<IInteraction>("Interaction", InteractionSchema);
 
-export default Collection;
+export default Interaction;

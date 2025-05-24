@@ -5,9 +5,8 @@ import HomeFilter from "@/components/filter/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import { api } from "@/lib/api";
 import handleError from "@/lib/handlers/error";
-import { ValidationError } from "@/lib/http-errors";
-import dbConnect from "@/lib/mongoose";
 
 const questions = [
   {
@@ -54,11 +53,7 @@ const questions = [
 
 const test = async () => {
   try {
-    await dbConnect();
-    throw new ValidationError({
-      title: ["Required"],
-      tags: ['"JS" is not a valid tag'],
-    });
+    return await api.users.getAll();
   } catch (error) {
     return handleError(error);
   }
@@ -69,7 +64,10 @@ interface SearchParams {
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
-  await test();
+  const users = await test();
+
+  console.log(users);
+
   const { query = "", filter = "" } = await searchParams;
 
   const filterQuestions = questions.filter((question) => {

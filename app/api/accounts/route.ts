@@ -22,7 +22,7 @@ export async function GET() {
   }
 }
 
-// Create User
+// Create Account
 export async function POST(request: Request) {
   try {
     await dbConnect();

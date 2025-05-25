@@ -1,3 +1,4 @@
+import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -63,7 +64,8 @@ const MobileNavigation = async () => {
                   }}
                 >
                   <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
-                    Log Out
+                    <LogOut className="size-5 text-black dark:text-white" />
+                    <span className="max-lg:hidden">Log Out</span>
                   </Button>
                 </form>
               </SheetClose>

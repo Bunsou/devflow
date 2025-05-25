@@ -73,29 +73,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return token;
     },
-    // async signIn({ user, profile, account }) {
-    //   if (account?.type === "credentials") return true;
-    //   if (!account || !user) return false;
+    async signIn({ user, profile, account }) {
+      if (account?.type === "credentials") return true;
+      if (!account || !user) return false;
 
-    //   const userInfo = {
-    //     name: user.name!,
-    //     email: user.email!,
-    //     image: user.image!,
-    //     username:
-    //       account.provider === "github"
-    //         ? (profile?.login as string)
-    //         : (user.name?.toLowerCase() as string),
-    //   };
+      const userInfo = {
+        name: user.name!,
+        email: user.email!,
+        image: user.image!,
+        username:
+          account.provider === "github"
+            ? (profile?.login as string)
+            : (user.name?.toLowerCase() as string),
+      };
 
-    //   const { success } = (await api.auth.oAuthSignIn({
-    //     user: userInfo,
-    //     provider: account.provider as "github" | "google",
-    //     providerAccountId: account.providerAccountId,
-    //   })) as ActionResponse;
+      const { success } = (await api.auth.oAuthSignIn({
+        user: userInfo,
+        provider: account.provider as "github" | "google",
+        providerAccountId: account.providerAccountId,
+      })) as ActionResponse;
 
-    //   if (!success) return false;
+      if (!success) return false;
 
-    //   return true;
-    // },
+      return true;
+    },
   },
 });
